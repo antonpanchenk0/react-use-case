@@ -19,8 +19,8 @@ const Form = () => {
     });
   }
 
-  const handleFilterByName = (countries, name) => {
-    return name !== '' ? countries.filter(country => country.name.common.toLowerCase().includes(state.name.toLowerCase())) : countries;
+  const handleFilterByName = (data, name) => {
+    return name !== '' ? data.filter(country => country.name.common.toLowerCase().includes(state.name.toLowerCase())) : data;
   }
 
   const handleSubmit = (e) => {
