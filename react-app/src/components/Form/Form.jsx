@@ -27,11 +27,25 @@ const Form = () => {
     return population !== '' ? data.filter(country => country.population < Number(formData.population * 1000000)) : data;
   }
 
+  const handleSortByName = (data, sortType) => {
+    // Check if sortType is "asc" or "desc"
+    if (sortType === "asc") {
+      return data.sort((a, b) => (a.name.common.toLowerCase() > b.name.common.toLowerCase()) ? 1 : -1);
+    }
+
+    if (sortType === "desc") {
+      return data.sort((a, b) => (a.name.common.toLowerCase() < b.name.common.toLowerCase()) ? 1 : -1);
+    }
+
+    return data;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.get('https://restcountries.com/v3.1/all')
       .then(response => handleFilterByName(response.data, formData.name))
       .then(data => handleFilterByPopulation(data, formData.population))
+      .then(data => handleSortByName(data, formData.sort))
       .then(data => {
         setCountries(data);
       })
@@ -54,8 +68,8 @@ const Form = () => {
         <label>
           Sort:
           <select name="sort" value={formData.sort} onChange={handleChange}>
-            <option value="ascend">Ascend</option>
-            <option value="descend">Descend</option>
+            <option value="asc">Ascend</option>
+            <option value="desc">Descend</option>
           </select>
         </label>
         <label>

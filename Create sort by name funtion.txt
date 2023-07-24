@@ -1,0 +1,22 @@
+Create the function that will accept 2 arguments data and sortType and will sort the array of object by the name field
+
+ChatGPT
+Here's an example function written in JavaScript which takes two parameters: data, an array of objects, and sortType, a string representing the sort order ("asc" for ascending and "desc" for descending). The function sorts the objects in the data array based on the name property.
+
+javascript
+Copy code
+function sortByName(data, sortType) {
+    // Check if sortType is "asc" or "desc"
+    if (sortType === "asc") {
+        return data.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    } else if (sortType === "desc") {
+        return data.sort((a, b) => (a.name < b.name) ? 1 : -1);
+    } else {
+        throw new Error("Invalid sortType. Please use 'asc' or 'desc'.");
+    }
+}
+This function uses JavaScript's built-in Array.prototype.sort() method to sort the data array. The sort() method accepts a comparator function which defines the sorting order. In the comparator function, we compare the name properties of two objects.
+
+If sortType is "asc", the comparator function returns a positive value if a.name is greater than b.name, effectively placing a after b in the sorted array. If sortType is "desc", the function does the opposite: it returns a positive value if a.name is less than b.name, which puts a before b.
+
+If sortType is neither "asc" nor "desc", the function throws an error.
