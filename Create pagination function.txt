@@ -1,0 +1,26 @@
+Create a function using js that will accept two arguments data and limit and will return the amount or records from the data according to the limit
+
+ChatGPT
+You can create a JavaScript function to achieve this using the slice method. The slice method returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included). Here's how you can create the function:
+
+javascript
+Copy code
+function getRecords(data, limit) {
+  if (!Array.isArray(data)) {
+    throw new Error('First argument should be an array');
+  }
+
+  if (typeof limit !== 'number') {
+    throw new Error('Second argument should be a number');
+  }
+
+  return data.slice(0, limit);
+}
+You can use this function like this:
+
+javascript
+Copy code
+const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const limit = 5;
+console.log(getRecords(data, limit)); // This will print [1, 2, 3, 4, 5]
+This function firstly checks if the data argument is an array and if the limit argument is a number. If they are not, the function throws an error. Otherwise, it returns the first limit number of elements from the data array.

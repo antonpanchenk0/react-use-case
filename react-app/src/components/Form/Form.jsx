@@ -7,7 +7,7 @@ const Form = () => {
     name: '',
     population: '',
     sort: '',
-    page: ''
+    limit: ''
   });
 
   const [countries, setCountries] = useState([]);
@@ -40,12 +40,21 @@ const Form = () => {
     return data;
   }
 
+  const handleLimitData = (data, limit) => {
+    if (!isNaN(Number(limit))) {
+      return data.slice(0, Number(limit));
+    }
+
+    return data;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.get('https://restcountries.com/v3.1/all')
       .then(response => handleFilterByName(response.data, formData.name))
       .then(data => handleFilterByPopulation(data, formData.population))
       .then(data => handleSortByName(data, formData.sort))
+      .then(data => handleLimitData(data, formData.limit))
       .then(data => {
         setCountries(data);
       })
@@ -73,8 +82,8 @@ const Form = () => {
           </select>
         </label>
         <label>
-          Page:
-          <input type="number" name="page" value={formData.page} onChange={handleChange} />
+          Limit:
+          <input type="number" name="limit" value={formData.limit} onChange={handleChange} />
         </label>
         <button type="submit">Submit</button>
       </form>
