@@ -19,14 +19,16 @@ const Form = () => {
     });
   }
 
+  const handleFilterByName = (countries, name) => {
+    return name !== '' ? countries.filter(country => country.name.common.toLowerCase().includes(state.name.toLowerCase())) : countries;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.get('https://restcountries.com/v3.1/all')
+      .then(response => handleFilterByName(response.data, name))
       .then(response => {
         let result = response.data;
-        if(state.name !== '') {
-          result = result.filter(country => country.name.common.toLowerCase().includes(state.name.toLowerCase()));
-        }
         if(state.population !== '') {
           result = result.filter(country => country.population > Number(state.population));
         }
