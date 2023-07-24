@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {
+  handleFilterByName,
+  handleFilterByPopulation,
+  handleSortByName,
+  handleLimitData,
+} from './heplers';
 import CountryList from './components/CountryList';
 
 const Form = () => {
@@ -17,35 +23,6 @@ const Form = () => {
       ...prevData,
       [e.target.name]: e.target.value
     }));
-  }
-
-  const handleFilterByName = (data, name) => {
-    return name !== '' ? data.filter(country => country.name.common.toLowerCase().includes(formData.name.toLowerCase())) : data;
-  }
-
-  const handleFilterByPopulation = (data, population) => {
-    return population !== '' ? data.filter(country => country.population < Number(formData.population * 1000000)) : data;
-  }
-
-  const handleSortByName = (data, sortType) => {
-    // Check if sortType is "asc" or "desc"
-    if (sortType === "asc") {
-      return data.sort((a, b) => (a.name.common.toLowerCase() > b.name.common.toLowerCase()) ? 1 : -1);
-    }
-
-    if (sortType === "desc") {
-      return data.sort((a, b) => (a.name.common.toLowerCase() < b.name.common.toLowerCase()) ? 1 : -1);
-    }
-
-    return data;
-  }
-
-  const handleLimitData = (data, limit) => {
-    if (!isNaN(Number(limit))) {
-      return data.slice(0, Number(limit));
-    }
-
-    return data;
   }
 
   const handleSubmit = (e) => {
