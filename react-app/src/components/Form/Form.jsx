@@ -3,7 +3,7 @@ import axios from 'axios';
 import CountryList from './components/CountryList';
 
 const Form = () => {
-  const [state, setState] = useState({
+  const [formData, setFormData] = useState({
     name: '',
     population: '',
     sort: '',
@@ -13,10 +13,10 @@ const Form = () => {
   const [countries, setCountries] = useState([]);
 
   const handleChange = (e) => {
-    setState({
-      ...state,
+    setFormData((prevData) => ({
+      ...prevData,
       [e.target.name]: e.target.value
-    });
+    }));
   }
 
   const handleFilterByName = (data, name) => {
@@ -26,23 +26,23 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.get('https://restcountries.com/v3.1/all')
-      .then(response => handleFilterByName(response.data, name))
+      .then(response => handleFilterByName(response.data, formData.name))
       .then(response => {
         let result = response.data;
-        if(state.population !== '') {
-          result = result.filter(country => country.population > Number(state.population));
+        if(formData.population !== '') {
+          result = result.filter(country => country.population > Number(formData.population));
         }
-        if(state.sort !== '') {
+        if(formData.sort !== '') {
           result = result.sort((a,b) => {
-            if(state.sort === 'ascend') {
+            if(formData.sort === 'ascend') {
               return a.population - b.population;
             } else {
               return b.population - a.population;
             }
           });
         }
-        if(state.page !== '') {
-          result = result.slice((Number(state.page)-1)*10, Number(state.page)*10);
+        if(formData.page !== '') {
+          result = result.slice((Number(formData.page)-1)*10, Number(formData.page)*10);
         }
         setCountries(result);
       })
@@ -56,22 +56,22 @@ const Form = () => {
       <form onSubmit={handleSubmit}>
         <label>
           Name:
-          <input type="text" name="name" value={state.name} onChange={handleChange} />
+          <input type="text" name="name" value={formData.name} onChange={handleChange} />
         </label>
         <label>
           Population:
-          <input type="number" name="population" value={state.population} onChange={handleChange} />
+          <input type="number" name="population" value={formData.population} onChange={handleChange} />
         </label>
         <label>
           Sort:
-          <select name="sort" value={state.sort} onChange={handleChange}>
+          <select name="sort" value={formData.sort} onChange={handleChange}>
             <option value="ascend">Ascend</option>
             <option value="descend">Descend</option>
           </select>
         </label>
         <label>
           Page:
-          <input type="number" name="page" value={state.page} onChange={handleChange} />
+          <input type="number" name="page" value={formData.page} onChange={handleChange} />
         </label>
         <button type="submit">Submit</button>
       </form>
