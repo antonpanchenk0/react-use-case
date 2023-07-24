@@ -23,28 +23,17 @@ const Form = () => {
     return name !== '' ? data.filter(country => country.name.common.toLowerCase().includes(formData.name.toLowerCase())) : data;
   }
 
+  const handleFilterByPopulation = (data, population) => {
+    return population !== '' ? data.filter(country => country.population < Number(formData.population * 1000000)) : data;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.get('https://restcountries.com/v3.1/all')
       .then(response => handleFilterByName(response.data, formData.name))
-      .then(response => {
-        let result = response.data;
-        if(formData.population !== '') {
-          result = result.filter(country => country.population > Number(formData.population));
-        }
-        if(formData.sort !== '') {
-          result = result.sort((a,b) => {
-            if(formData.sort === 'ascend') {
-              return a.population - b.population;
-            } else {
-              return b.population - a.population;
-            }
-          });
-        }
-        if(formData.page !== '') {
-          result = result.slice((Number(formData.page)-1)*10, Number(formData.page)*10);
-        }
-        setCountries(result);
+      .then(data => handleFilterByPopulation(data, formData.population))
+      .then(data => {
+        setCountries(data);
       })
       .catch(err => {
         console.log(err);
@@ -59,7 +48,7 @@ const Form = () => {
           <input type="text" name="name" value={formData.name} onChange={handleChange} />
         </label>
         <label>
-          Population:
+          Population(m):
           <input type="number" name="population" value={formData.population} onChange={handleChange} />
         </label>
         <label>
