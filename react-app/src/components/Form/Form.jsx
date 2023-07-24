@@ -20,7 +20,7 @@ const Form = () => {
   }
 
   const handleFilterByName = (data, name) => {
-    return name !== '' ? data.filter(country => country.name.common.toLowerCase().includes(state.name.toLowerCase())) : data;
+    return name !== '' ? data.filter(country => country.name.common.toLowerCase().includes(formData.name.toLowerCase())) : data;
   }
 
   const handleSubmit = (e) => {
